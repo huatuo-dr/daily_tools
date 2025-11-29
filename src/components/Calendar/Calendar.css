@@ -110,11 +110,27 @@
   position: relative;
   transition: all 0.2s ease;
   background-color: #f8f9fa;
+  cursor: pointer;
 }
 
-.calendar-day:hover {
+.calendar-day:not(.other-month):hover {
   background-color: #e8ecf1;
   transform: scale(1.05);
+}
+
+.calendar-day.selected {
+  background-color: #667eea;
+  color: white;
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.calendar-day.selected .day-number {
+  color: white;
+}
+
+.calendar-day.selected .day-lunar {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .calendar-day.other-month {
@@ -129,6 +145,10 @@
 
 .calendar-day.today .day-number {
   color: white;
+}
+
+.calendar-day.today .day-lunar {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .calendar-day.holiday {
@@ -170,6 +190,16 @@
   color: #999;
   margin-top: 0.125rem;
   text-align: center;
+}
+
+/* Highlight solar terms (节气) */
+.calendar-day .day-lunar.jieqi {
+  color: #92400e;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fbbf24 0%, #fcd34d 100%);
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
 }
 
 .day-label {

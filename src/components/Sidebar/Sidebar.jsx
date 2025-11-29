@@ -2,8 +2,10 @@ import './Sidebar.css'
 
 const Sidebar = ({ activeTab, onTabChange }) => {
   const tabs = [
+    { id: 'coding', label: 'Coding', icon: '💻' },
     { id: 'weather', label: '天气', icon: '☀️' },
-    { id: 'calendar', label: '日历', icon: '📅' }
+    { id: 'calendar', label: '日历', icon: '📅' },
+    { id: 'news', label: '新闻', icon: '📰' }
   ]
 
   return (

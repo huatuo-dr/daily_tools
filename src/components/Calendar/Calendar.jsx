@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import './Calendar.css'
 import { getCalendarData, isHoliday, isWorkday } from '../../utils/calendarUtils'
+import AlmanacPanel from './AlmanacPanel'
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
   
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
@@ -19,7 +21,16 @@ const Calendar = () => {
   }
   
   const goToToday = () => {
-    setCurrentDate(new Date())
+    const today = new Date()
+    setCurrentDate(today)
+    setSelectedDate(today)
+  }
+  
+  const handleDateClick = (day) => {
+    if (day.date && day.isCurrentMonth) {
+      const newSelectedDate = new Date(year, month, day.date)
+      setSelectedDate(newSelectedDate)
+    }
   }
 
   const weekDays = ['日', '一', '二', '三', '四', '五', '六']
@@ -63,20 +74,24 @@ const Calendar = () => {
           const workday = dateStr ? isWorkday(dateStr) : null
           const isToday = day.isCurrentMonth && day.date === new Date().getDate() && 
                          month === new Date().getMonth() && year === new Date().getFullYear()
+          const isSelected = day.isCurrentMonth && day.date === selectedDate.getDate() && 
+                            day.month - 1 === selectedDate.getMonth() && day.year === selectedDate.getFullYear()
           
           return (
             <div 
               key={index} 
               className={`calendar-day ${!day.isCurrentMonth ? 'other-month' : ''} 
                          ${isToday ? 'today' : ''} 
+                         ${isSelected ? 'selected' : ''}
                          ${holiday ? 'holiday' : ''} 
                          ${workday ? 'workday' : ''}`}
+              onClick={() => handleDateClick(day)}
             >
               {day.date && (
                 <>
                   <span className="day-number">{day.date}</span>
                   {day.lunarInfo && (
-                    <span className="day-lunar">
+                    <span className={`day-lunar ${day.lunarInfo.jieQi ? 'jieqi' : ''}`}>
                       {day.lunarInfo.displayText}
                     </span>
                   )}
@@ -88,6 +103,9 @@ const Calendar = () => {
           )
         })}
       </div>
+
+      {/* Almanac Panel */}
+      <AlmanacPanel selectedDate={selectedDate} />
     </div>
   )
 }

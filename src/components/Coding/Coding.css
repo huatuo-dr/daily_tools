@@ -1,0 +1,152 @@
+.coding {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.coding-header {
+  margin-bottom: 1.5rem;
+}
+
+.coding-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.coding-sub-tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.sub-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border: 2px solid transparent;
+}
+
+.sub-tab:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.sub-tab.active {
+  background: rgba(255, 255, 255, 0.95);
+  color: #667eea;
+  font-weight: 600;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sub-tab-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.sub-tab-label {
+  line-height: 1;
+}
+
+.coding-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+/* Scrollbar for sub-tabs */
+.coding-sub-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.coding-sub-tabs::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.coding-sub-tabs::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.coding-sub-tabs::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-color-scheme: light) {
+  .coding-title {
+    color: #1a1a1a;
+  }
+
+  .sub-tab {
+    background: rgba(0, 0, 0, 0.05);
+    color: #666;
+  }
+
+  .sub-tab:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+  }
+
+  .sub-tab.active {
+    background: #667eea;
+    color: white;
+    border-color: #5568d3;
+  }
+
+  .coding-sub-tabs::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .coding-sub-tabs::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .coding-sub-tabs::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (max-width: 768px) {
+  .coding-title {
+    font-size: 1.5rem;
+  }
+
+  .coding-sub-tabs {
+    gap: 0.5rem;
+  }
+
+  .sub-tab {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .sub-tab-icon {
+    font-size: 1rem;
+  }
+
+  .coding-content {
+    padding: 1.5rem;
+  }
+}
+
