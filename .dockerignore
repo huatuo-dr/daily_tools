@@ -13,7 +13,7 @@ build/
 
 # 环境变量文件
 .env
-.env.local
+# .env.local  # 需要保留！Vite 构建时需要读取 VITE_* 变量
 .env.production
 .env.development
 

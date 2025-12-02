@@ -7,8 +7,8 @@ WORKDIR /app
 # 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安装项目依赖（使用 npm ci 更快更可靠）
-RUN npm ci --omit=dev
+# 安装所有依赖（包括 devDependencies，因为构建需要 vite）
+RUN npm ci
 
 # 复制项目源代码
 COPY . .
