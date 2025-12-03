@@ -3,10 +3,21 @@ import { CozeAPI, ChatEventType } from '@coze/api'
 import './ShellTranslate.css'
 
 const ShellTranslate = () => {
+  const WELCOME_MESSAGE = '👋 你好！我可以帮你：\n\n' +
+    '**1️⃣ 自然语言 → 命令**\n' +
+    '将你的需求转换为 Linux / PowerShell / CMD 命令，例如：\n' +
+    '- 查找本目录下所有 *.log 文件\n' +
+    '- 列出当前目录的文件和大小\n\n' +
+    '**2️⃣ 命令 → 自然语言**\n' +
+    '解释命令的含义和作用，例如：\n' +
+    '- `Get-Command python`\n' +
+    '- `find . -name "*.txt" -mtime -7`\n\n' +
+    '直接输入你的需求或命令吧！'
+
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: '👋 你好！我可以帮你：\n\n**1️⃣ 自然语言 → Shell命令**\n例如：\n- "列出当前目录下的所有文件"\n- "查找包含hello的文件"\n- "删除所有.log文件"\n\n**2️⃣ Linux命令 → PowerShell命令**\n例如：\n- 输入：`ls -la`\n- 输出：`Get-ChildItem -Force`\n\n直接输入你的需求或命令吧！',
+      content: WELCOME_MESSAGE,
       timestamp: new Date()
     }
   ])
@@ -182,7 +193,7 @@ const ShellTranslate = () => {
   const handleClear = () => {
     setMessages([{
       role: 'assistant',
-      content: '👋 你好！我可以帮你：\n\n**1️⃣ 自然语言 → Shell命令**\n例如：\n- "列出当前目录下的所有文件"\n- "查找包含hello的文件"\n- "删除所有.log文件"\n\n**2️⃣ Linux命令 → PowerShell命令**\n例如：\n- 输入：`ls -la`\n- 输出：`Get-ChildItem -Force`\n\n直接输入你的需求或命令吧！',
+      content: WELCOME_MESSAGE,
       timestamp: new Date()
     }])
   }
@@ -289,8 +300,7 @@ const ShellTranslate = () => {
 
       <div className="chat-header">
         <div className="header-title">
-          <h3 className="title">🔧 命令翻译助手</h3>
-          <span className="subtitle">由 Coze AI 驱动 · 纯前端方案</span>
+          <h3 className="title">🔧 命令翻译助手 <span className="subtitle">由 Coze AI 驱动</span></h3>
         </div>
         <button onClick={handleClear} className="clear-chat-btn">
           🗑️ 清空对话
@@ -338,7 +348,7 @@ const ShellTranslate = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="输入自然语言或Linux命令，例如：列出当前目录下的所有文件 或 ls -la..."
+            placeholder="输入需求或命令，例如：查找所有 *.log 文件 / which python 是什么意思..."
             disabled={isLoading}
             rows={1}
           />

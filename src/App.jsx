@@ -8,6 +8,7 @@ import News from './components/News/News'
 
 function App() {
   const [activeTab, setActiveTab] = useState('coding')
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   // Render active tool component
   const renderToolContent = () => {
@@ -26,8 +27,13 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+    <div className={`app ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <Sidebar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab}
+        collapsed={sidebarCollapsed}
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+      />
       <main className="content">
         {renderToolContent()}
       </main>

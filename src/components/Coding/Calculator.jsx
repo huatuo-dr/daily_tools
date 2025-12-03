@@ -2,11 +2,17 @@ import { useState } from 'react'
 import './Calculator.css'
 
 const Calculator = () => {
-  const [mode, setMode] = useState('standard') // 'standard' or 'programmer'
+  const [mode, setMode] = useState('scientific') // 'scientific' or 'programmer'
   const [display, setDisplay] = useState('0')
   const [previousValue, setPreviousValue] = useState(null)
   const [operation, setOperation] = useState(null)
   const [waitingForOperand, setWaitingForOperand] = useState(false)
+  
+  // Scientific calculator states
+  const [angleUnit, setAngleUnit] = useState('DEG') // 'DEG' or 'RAD'
+  const [memory, setMemory] = useState(0)
+  const [hasMemory, setHasMemory] = useState(false)
+  const [isSecondFn, setIsSecondFn] = useState(false) // For 2nd function toggle
   
   // Programmer calculator states
   const [base, setBase] = useState('DEC') // 'HEX', 'DEC', 'OCT', 'BIN'
@@ -61,15 +67,173 @@ const Calculator = () => {
   }
 
   const clear = () => {
-    if (mode === 'programmer') {
-      setDisplay('0')
-    } else {
-      setDisplay('0')
-    }
+    setDisplay('0')
     setPreviousValue(null)
     setOperation(null)
     setWaitingForOperand(false)
     setDecValue(0)
+  }
+
+  const backspace = () => {
+    if (display.length === 1 || (display.length === 2 && display[0] === '-')) {
+      setDisplay('0')
+    } else {
+      setDisplay(display.slice(0, -1))
+    }
+  }
+
+  const toggleSign = () => {
+    const value = parseFloat(display)
+    setDisplay(String(-value))
+  }
+
+  // Scientific calculator functions
+  const toRadians = (deg) => deg * (Math.PI / 180)
+  const toDegrees = (rad) => rad * (180 / Math.PI)
+
+  const performScientificOperation = (op) => {
+    const value = parseFloat(display)
+    let result
+
+    switch (op) {
+      // Trigonometric functions
+      case 'sin':
+        result = angleUnit === 'DEG' ? Math.sin(toRadians(value)) : Math.sin(value)
+        break
+      case 'cos':
+        result = angleUnit === 'DEG' ? Math.cos(toRadians(value)) : Math.cos(value)
+        break
+      case 'tan':
+        result = angleUnit === 'DEG' ? Math.tan(toRadians(value)) : Math.tan(value)
+        break
+      case 'asin':
+        result = angleUnit === 'DEG' ? toDegrees(Math.asin(value)) : Math.asin(value)
+        break
+      case 'acos':
+        result = angleUnit === 'DEG' ? toDegrees(Math.acos(value)) : Math.acos(value)
+        break
+      case 'atan':
+        result = angleUnit === 'DEG' ? toDegrees(Math.atan(value)) : Math.atan(value)
+        break
+      // Power and root
+      case 'x²':
+        result = value * value
+        break
+      case 'x³':
+        result = value * value * value
+        break
+      case '√':
+        result = Math.sqrt(value)
+        break
+      case '³√':
+        result = Math.cbrt(value)
+        break
+      case '1/x':
+        result = 1 / value
+        break
+      case '|x|':
+        result = Math.abs(value)
+        break
+      // Exponential and logarithmic
+      case 'exp':
+        result = Math.exp(value)
+        break
+      case 'ln':
+        result = Math.log(value)
+        break
+      case 'log':
+        result = Math.log10(value)
+        break
+      case '10^x':
+        result = Math.pow(10, value)
+        break
+      case 'e^x':
+        result = Math.exp(value)
+        break
+      case '2^x':
+        result = Math.pow(2, value)
+        break
+      // Factorial
+      case 'n!':
+        result = factorial(Math.floor(value))
+        break
+      default:
+        result = value
+    }
+
+    if (!isFinite(result)) {
+      setDisplay('Error')
+    } else {
+      setDisplay(formatResult(result))
+    }
+    setWaitingForOperand(true)
+  }
+
+  const factorial = (n) => {
+    if (n < 0) return NaN
+    if (n === 0 || n === 1) return 1
+    let result = 1
+    for (let i = 2; i <= n; i++) {
+      result *= i
+    }
+    return result
+  }
+
+  const formatResult = (num) => {
+    if (Math.abs(num) < 1e-10 && num !== 0) {
+      return num.toExponential(6)
+    }
+    if (Math.abs(num) >= 1e10) {
+      return num.toExponential(6)
+    }
+    // Round to avoid floating point errors
+    const rounded = Math.round(num * 1e10) / 1e10
+    return String(rounded)
+  }
+
+  const inputConstant = (constant) => {
+    let value
+    switch (constant) {
+      case 'π':
+        value = Math.PI
+        break
+      case 'e':
+        value = Math.E
+        break
+      default:
+        return
+    }
+    setDisplay(formatResult(value))
+    setWaitingForOperand(true)
+  }
+
+  // Memory functions
+  const memoryClear = () => {
+    setMemory(0)
+    setHasMemory(false)
+  }
+
+  const memoryRecall = () => {
+    setDisplay(formatResult(memory))
+    setWaitingForOperand(true)
+  }
+
+  const memoryAdd = () => {
+    setMemory(memory + parseFloat(display))
+    setHasMemory(true)
+    setWaitingForOperand(true)
+  }
+
+  const memorySubtract = () => {
+    setMemory(memory - parseFloat(display))
+    setHasMemory(true)
+    setWaitingForOperand(true)
+  }
+
+  const memoryStore = () => {
+    setMemory(parseFloat(display))
+    setHasMemory(true)
+    setWaitingForOperand(true)
   }
 
   const performOperation = (nextOperation) => {
@@ -153,30 +317,16 @@ const Calculator = () => {
         return prev * current
       case '÷':
         return current !== 0 ? prev / current : 0
+      case 'xʸ':
+        return Math.pow(prev, current)
+      case 'ʸ√x':
+        return Math.pow(prev, 1 / current)
+      case 'mod':
+        return prev % current
       default:
         return current
     }
   }
-
-  const buttons = [
-    { value: 'C', type: 'function', span: 2 },
-    { value: '÷', type: 'operator' },
-    { value: '×', type: 'operator' },
-    { value: '7', type: 'digit' },
-    { value: '8', type: 'digit' },
-    { value: '9', type: 'digit' },
-    { value: '-', type: 'operator' },
-    { value: '4', type: 'digit' },
-    { value: '5', type: 'digit' },
-    { value: '6', type: 'digit' },
-    { value: '+', type: 'operator' },
-    { value: '1', type: 'digit' },
-    { value: '2', type: 'digit' },
-    { value: '3', type: 'digit' },
-    { value: '=', type: 'equals' },
-    { value: '0', type: 'digit', span: 2 },
-    { value: '.', type: 'digit' },
-  ]
 
   const handleButtonClick = (button) => {
     if (button.type === 'digit') {
@@ -344,19 +494,125 @@ const Calculator = () => {
     }
   }
 
-  const renderStandardCalculator = () => (
-    <div className="calc-container">
-      <div className="calc-display">{display}</div>
-      <div className="calc-buttons">
-        {buttons.map((button, index) => (
-          <button
-            key={index}
-            className={`calc-btn ${button.type} ${button.span ? `span-${button.span}` : ''}`}
-            onClick={() => handleButtonClick(button)}
-          >
-            {button.value}
-          </button>
-        ))}
+  const renderScientificCalculator = () => (
+    <div className="calc-container scientific">
+      {/* Display */}
+      <div className="calc-display scientific-display">{display}</div>
+      
+      {/* Horizontal layout: Left (functions) | Right (number pad) */}
+      <div className="sci-horizontal-layout">
+        {/* Left panel: Scientific functions */}
+        <div className="sci-left-panel">
+          {/* Mode and Memory row */}
+          <div className="sci-top-row">
+            <button 
+              className={`sci-mode-btn ${angleUnit === 'DEG' ? 'active' : ''}`}
+              onClick={() => setAngleUnit('DEG')}
+            >
+              DEG
+            </button>
+            <button 
+              className={`sci-mode-btn ${angleUnit === 'RAD' ? 'active' : ''}`}
+              onClick={() => setAngleUnit('RAD')}
+            >
+              RAD
+            </button>
+            <button 
+              className={`sci-fn-btn toggle ${isSecondFn ? 'active' : ''}`} 
+              onClick={() => setIsSecondFn(!isSecondFn)}
+            >
+              2nd
+            </button>
+          </div>
+
+          {/* Scientific functions grid */}
+          <div className="sci-functions-grid">
+            {/* Row 1 */}
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? 'asin' : 'sin')}>
+              {isSecondFn ? 'sin⁻¹' : 'sin'}
+            </button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? 'acos' : 'cos')}>
+              {isSecondFn ? 'cos⁻¹' : 'cos'}
+            </button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? 'atan' : 'tan')}>
+              {isSecondFn ? 'tan⁻¹' : 'tan'}
+            </button>
+            
+            {/* Row 2 */}
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? 'x³' : 'x²')}>
+              {isSecondFn ? 'x³' : 'x²'}
+            </button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? '³√' : '√')}>
+              {isSecondFn ? '³√x' : '√x'}
+            </button>
+            <button className="sci-fn-btn" onClick={() => performOperation(isSecondFn ? 'ʸ√x' : 'xʸ')}>
+              {isSecondFn ? 'ʸ√x' : 'xʸ'}
+            </button>
+            
+            {/* Row 3 */}
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? 'e^x' : 'log')}>
+              {isSecondFn ? 'eˣ' : 'log'}
+            </button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation('ln')}>ln</button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation(isSecondFn ? '2^x' : '10^x')}>
+              {isSecondFn ? '2ˣ' : '10ˣ'}
+            </button>
+            
+            {/* Row 4 */}
+            <button className="sci-fn-btn" onClick={() => performScientificOperation('1/x')}>1/x</button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation('|x|')}>|x|</button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation('n!')}>n!</button>
+            
+            {/* Row 5: Constants */}
+            <button className="sci-fn-btn const" onClick={() => inputConstant('π')}>π</button>
+            <button className="sci-fn-btn const" onClick={() => inputConstant('e')}>e</button>
+            <button className="sci-fn-btn" onClick={() => performScientificOperation('exp')}>exp</button>
+          </div>
+
+          {/* Memory row */}
+          <div className="sci-memory-row">
+            <button className={`sci-mem-btn ${!hasMemory ? 'disabled' : ''}`} onClick={memoryClear} disabled={!hasMemory}>MC</button>
+            <button className={`sci-mem-btn ${!hasMemory ? 'disabled' : ''}`} onClick={memoryRecall} disabled={!hasMemory}>MR</button>
+            <button className="sci-mem-btn" onClick={memoryAdd}>M+</button>
+            <button className="sci-mem-btn" onClick={memorySubtract}>M−</button>
+            <button className="sci-mem-btn" onClick={memoryStore}>MS</button>
+          </div>
+        </div>
+
+        {/* Right panel: Number pad and basic operators */}
+        <div className="sci-right-panel">
+          <div className="sci-numpad">
+            {/* Row 1 */}
+            <button className="sci-num-btn func" onClick={clear}>C</button>
+            <button className="sci-num-btn func" onClick={backspace}>⌫</button>
+            <button className="sci-num-btn operator" onClick={() => performOperation('mod')}>mod</button>
+            <button className="sci-num-btn operator" onClick={() => performOperation('÷')}>÷</button>
+            
+            {/* Row 2 */}
+            <button className="sci-num-btn digit" onClick={() => inputDigit(7)}>7</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(8)}>8</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(9)}>9</button>
+            <button className="sci-num-btn operator" onClick={() => performOperation('×')}>×</button>
+            
+            {/* Row 3 */}
+            <button className="sci-num-btn digit" onClick={() => inputDigit(4)}>4</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(5)}>5</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(6)}>6</button>
+            <button className="sci-num-btn operator" onClick={() => performOperation('-')}>−</button>
+            
+            {/* Row 4 */}
+            <button className="sci-num-btn digit" onClick={() => inputDigit(1)}>1</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(2)}>2</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(3)}>3</button>
+            <button className="sci-num-btn operator" onClick={() => performOperation('+')}>+</button>
+            
+            {/* Row 5 */}
+            <button className="sci-num-btn digit" onClick={toggleSign}>+/−</button>
+            <button className="sci-num-btn digit" onClick={() => inputDigit(0)}>0</button>
+            <button className="sci-num-btn digit" onClick={inputDecimal}>.</button>
+            <button className="sci-num-btn equals" onClick={() => performOperation('=')}>=</button>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -483,10 +739,10 @@ const Calculator = () => {
       {/* Mode switcher */}
       <div className="calc-mode-switcher">
         <button 
-          className={`mode-btn ${mode === 'standard' ? 'active' : ''}`}
-          onClick={() => setMode('standard')}
+          className={`mode-btn ${mode === 'scientific' ? 'active' : ''}`}
+          onClick={() => setMode('scientific')}
         >
-          🔢 标准
+          🔬 科学
         </button>
         <button 
           className={`mode-btn ${mode === 'programmer' ? 'active' : ''}`}
@@ -496,7 +752,7 @@ const Calculator = () => {
         </button>
       </div>
 
-      {mode === 'standard' ? renderStandardCalculator() : renderProgrammerCalculator()}
+      {mode === 'scientific' ? renderScientificCalculator() : renderProgrammerCalculator()}
     </div>
   )
 }
