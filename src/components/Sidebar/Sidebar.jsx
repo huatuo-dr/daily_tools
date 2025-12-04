@@ -5,7 +5,8 @@ const Sidebar = ({ activeTab, onTabChange, collapsed, onToggle }) => {
     { id: 'coding', label: 'Coding', icon: '💻' },
     { id: 'weather', label: '天气', icon: '☀️' },
     { id: 'calendar', label: '日历', icon: '📅' },
-    { id: 'news', label: '新闻', icon: '📰' }
+    { id: 'news', label: '新闻', icon: '📰' },
+    { id: 'moyu', label: 'MOYU', icon: '🐟' }
   ]
 
   return (

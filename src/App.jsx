@@ -5,6 +5,7 @@ import Coding from './components/Coding/Coding'
 import Weather from './components/Weather/Weather'
 import Calendar from './components/Calendar/Calendar'
 import News from './components/News/News'
+import Moyu from './components/Moyu/Moyu'
 
 function App() {
   const [activeTab, setActiveTab] = useState('coding')
@@ -21,6 +22,8 @@ function App() {
         return <Calendar />
       case 'news':
         return <News />
+      case 'moyu':
+        return <Moyu />
       default:
         return <Coding />
     }

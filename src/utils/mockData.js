@@ -26,15 +26,16 @@ export const getMockWeatherData = (city = '北京') => {
   
   const forecast = []
   const today = new Date()
-  
+  const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+
   for (let i = 0; i < 15; i++) {
     const forecastDate = new Date(today)
     forecastDate.setDate(today.getDate() + i)
-    
+
     const condition = weatherConditions[Math.floor(Math.random() * weatherConditions.length)]
     const high = baseTemp + Math.floor(Math.random() * 8) - 2
     const low = high - Math.floor(Math.random() * 10) - 5
-    
+
     // Calculate rain probability based on condition
     let rainProbability = 0
     if (condition.condition.includes('雨')) {
@@ -44,9 +45,10 @@ export const getMockWeatherData = (city = '北京') => {
     } else {
       rainProbability = Math.floor(Math.random() * 20) // 0-20%
     }
-    
+
     forecast.push({
       date: `${forecastDate.getMonth() + 1}/${forecastDate.getDate()}`,
+      weekday: weekdays[forecastDate.getDay()],
       icon: condition.icon,
       condition: condition.condition,
       high,

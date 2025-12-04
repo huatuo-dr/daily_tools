@@ -1,0 +1,258 @@
+.moyu-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.terminal {
+  width: 100%;
+  max-width: 900px;
+  height: calc(100vh - 80px);
+  max-height: 700px;
+  background: #0d0d0d;
+  border-radius: 12px;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 100px rgba(0, 255, 136, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+/* Terminal Header - macOS style */
+.terminal-header {
+  background: linear-gradient(180deg, #3d3d3d 0%, #2d2d2d 100%);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #1a1a1a;
+  flex-shrink: 0;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-buttons span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.terminal-buttons span:hover {
+  opacity: 0.8;
+}
+
+.btn-close {
+  background: #ff5f56;
+}
+
+.btn-minimize {
+  background: #ffbd2e;
+}
+
+.btn-maximize {
+  background: #27ca3f;
+}
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  font-weight: 500;
+  margin-right: 60px;
+}
+
+/* Terminal Body */
+.terminal-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #0d0d0d;
+  user-select: text;
+  cursor: text;
+}
+
+/* Scrollbar styling */
+.terminal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Terminal Lines */
+.terminal-line {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 2px;
+  user-select: text;
+}
+
+.terminal-line.input {
+  color: #00ff88;
+  font-weight: 500;
+}
+
+.terminal-line.output {
+  color: #e0e0e0;
+}
+
+.terminal-line.system {
+  color: #00bfff;
+}
+
+.terminal-line.error {
+  color: #ff6b6b;
+}
+
+.terminal-line.help {
+  color: #ffd93d;
+}
+
+.terminal-line.info {
+  color: #a8e6cf;
+}
+
+.terminal-line.game {
+  color: #e0e0e0;
+}
+
+.terminal-line.success {
+  color: #00ff88;
+}
+
+.terminal-line.warning {
+  color: #ffa502;
+}
+
+/* Input Line */
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.prompt {
+  color: #00ff88;
+  font-weight: 600;
+  margin-right: 4px;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  caret-color: #00ff88;
+  padding: 0;
+}
+
+.terminal-input::selection {
+  background: #00ff88;
+  color: #0d0d0d;
+}
+
+/* Blinking cursor effect */
+.terminal-input:focus {
+  animation: none;
+}
+
+/* Game specific styles */
+.terminal-line.game-numbers {
+  color: #ff79c6;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.terminal-line.game-success {
+  color: #50fa7b;
+  font-weight: 600;
+}
+
+.terminal-line.game-fail {
+  color: #ff5555;
+}
+
+/* ASCII art styling */
+.terminal-line.ascii {
+  color: #bd93f9;
+  line-height: 1.2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .moyu-container {
+    padding: 10px;
+  }
+  
+  .terminal {
+    height: calc(100vh - 40px);
+    max-height: none;
+    border-radius: 8px;
+  }
+  
+  .terminal-body {
+    padding: 12px;
+  }
+  
+  .terminal-line {
+    font-size: 12px;
+  }
+  
+  .prompt,
+  .terminal-input {
+    font-size: 12px;
+  }
+  
+  .terminal-title {
+    font-size: 11px;
+  }
+}
+
+/* Animation for new lines */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-line {
+  animation: fadeIn 0.1s ease-out;
+}
+

@@ -87,6 +87,7 @@ const Weather = () => {
       }),
       forecast: apiData.daily.map(day => ({
         date: formatDate(day.date),
+        weekday: getWeekday(day.date),
         icon: getWeatherIcon(day.iconDay),
         condition: day.textDay,
         high: day.tempMax,
@@ -121,6 +122,13 @@ const Weather = () => {
   const formatDate = (dateStr) => {
     const date = new Date(dateStr)
     return `${date.getMonth() + 1}/${date.getDate()}`
+  }
+
+  // Get weekday name in Chinese
+  const getWeekday = (dateStr) => {
+    const date = new Date(dateStr)
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+    return weekdays[date.getDay()]
   }
 
   const loadWeatherData = async (city) => {
@@ -226,7 +234,10 @@ const Weather = () => {
         <div className="forecast-list">
           {weatherData.forecast.map((day, index) => (
             <div key={index} className="forecast-item">
-              <div className="forecast-date">{day.date}</div>
+              <div className="forecast-date">
+                <span className="date-text">{day.date}</span>
+                <span className="weekday-text">{day.weekday}</span>
+              </div>
               <div className="forecast-icon">{day.icon}</div>
               <div className="forecast-condition">{day.condition}</div>
               <div className="forecast-temp">
