@@ -59,7 +59,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -338,12 +338,12 @@
 
 .input-wrapper {
   display: flex;
-  gap: 0.75rem;
-  align-items: flex-end;
+  gap: 0.5rem;
+  align-items: center;
   background: #f8f9fa;
   border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 0.75rem;
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
   transition: border-color 0.2s ease;
 }
 
@@ -369,13 +369,13 @@
 }
 
 .send-btn {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
