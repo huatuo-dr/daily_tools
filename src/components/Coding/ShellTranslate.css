@@ -191,6 +191,7 @@
 
 .message-body {
   background: white;
+  color: #1a1a1a;
   border-radius: 12px;
   padding: 1rem 1.25rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -204,6 +205,7 @@
 .text-content p {
   margin: 0.25rem 0;
   line-height: 1.6;
+  color: #374151;
 }
 
 .message.user .text-content p {
@@ -356,6 +358,7 @@
   flex: 1;
   border: none;
   background: transparent;
+  color: #1a1a1a;
   font-size: 0.95rem;
   line-height: 1.5;
   resize: none;

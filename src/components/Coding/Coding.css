@@ -150,4 +150,60 @@
   }
 }
 
+/* Collapse Toggle */
+.coding-top {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.coding-top.hidden {
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.collapse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.collapse-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.collapse-icon {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+}
+
+.collapse-label {
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: light) {
+  .collapse-toggle {
+    background: rgba(0, 0, 0, 0.08);
+    color: #666;
+  }
+
+  .collapse-toggle:hover {
+    background: rgba(0, 0, 0, 0.12);
+    color: #1a1a1a;
+  }
+}
+
 

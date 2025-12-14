@@ -9,6 +9,7 @@ import IpLookup from './IpLookup'
 
 const Coding = () => {
   const [activeSubTab, setActiveSubTab] = useState('shell')
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   const subTabs = [
     { id: 'shell', label: '命令翻译', icon: '🔧' },
@@ -38,24 +39,44 @@ const Coding = () => {
     }
   }
 
+  // Get current active tab info for collapsed display
+  const activeTab = subTabs.find(tab => tab.id === activeSubTab)
+
   return (
-    <div className="coding">
-      <div className="coding-header">
-        <h2 className="coding-title">💻 开发工具</h2>
+    <div className={`coding ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className={`coding-top ${isCollapsed ? 'hidden' : ''}`}>
+        <div className="coding-header">
+          <h2 className="coding-title">💻 开发工具</h2>
+        </div>
+
+        <div className="coding-sub-tabs">
+          {subTabs.map(tab => (
+            <button
+              key={tab.id}
+              className={`sub-tab ${activeSubTab === tab.id ? 'active' : ''}`}
+              onClick={() => setActiveSubTab(tab.id)}
+            >
+              <span className="sub-tab-icon">{tab.icon}</span>
+              <span className="sub-tab-label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="coding-sub-tabs">
-        {subTabs.map(tab => (
-          <button
-            key={tab.id}
-            className={`sub-tab ${activeSubTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveSubTab(tab.id)}
-          >
-            <span className="sub-tab-icon">{tab.icon}</span>
-            <span className="sub-tab-label">{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      <button
+        className="collapse-toggle"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        title={isCollapsed ? '展开工具栏' : '折叠工具栏'}
+      >
+        {isCollapsed ? (
+          <>
+            <span className="collapse-icon">▼</span>
+            <span className="collapse-label">{activeTab?.icon} {activeTab?.label}</span>
+          </>
+        ) : (
+          <span className="collapse-icon">▲</span>
+        )}
+      </button>
 
       <div className="coding-content">
         {renderSubContent()}
