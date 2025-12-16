@@ -3,6 +3,7 @@ import './Sidebar.css'
 const Sidebar = ({ activeTab, onTabChange, collapsed, onToggle }) => {
   const tabs = [
     { id: 'coding', label: 'Coding', icon: '💻' },
+    { id: 'image', label: '图片', icon: '🖼️' },
     { id: 'weather', label: '天气', icon: '☀️' },
     { id: 'calendar', label: '日历', icon: '📅' },
     { id: 'news', label: '新闻', icon: '📰' },

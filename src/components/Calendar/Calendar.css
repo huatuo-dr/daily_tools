@@ -119,18 +119,19 @@
 }
 
 .calendar-day.selected {
-  background-color: #667eea;
-  color: white;
+  background-color: #93c5fd;
+  color: #1e40af;
   transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(147, 197, 253, 0.3);
 }
 
 .calendar-day.selected .day-number {
-  color: white;
+  color: #1e40af;
+  font-weight: 600;
 }
 
 .calendar-day.selected .day-lunar {
-  color: rgba(255, 255, 255, 0.8);
+  color: #3b82f6;
 }
 
 .calendar-day.other-month {
@@ -148,6 +149,20 @@
 }
 
 .calendar-day.today .day-lunar {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Ensure today style takes priority over selected */
+.calendar-day.today.selected {
+  background-color: #667eea;
+  color: white;
+}
+
+.calendar-day.today.selected .day-number {
+  color: white;
+}
+
+.calendar-day.today.selected .day-lunar {
   color: rgba(255, 255, 255, 0.8);
 }
 

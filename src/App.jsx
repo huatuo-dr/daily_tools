@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Sidebar from './components/Sidebar/Sidebar'
 import Coding from './components/Coding/Coding'
+import Image from './components/Image/Image'
 import Weather from './components/Weather/Weather'
 import Calendar from './components/Calendar/Calendar'
 import News from './components/News/News'
@@ -16,6 +17,8 @@ function App() {
     switch (activeTab) {
       case 'coding':
         return <Coding />
+      case 'image':
+        return <Image />
       case 'weather':
         return <Weather />
       case 'calendar':
