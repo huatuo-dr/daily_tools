@@ -26,7 +26,8 @@
   min-height: 400px;
 }
 
-.drop-zone {
+/* Scoped classes for RemoveWatermark */
+.rw-drop-zone {
   border: 2px dashed #cbd5e1;
   border-radius: 16px;
   padding: 3rem;
@@ -36,109 +37,67 @@
   cursor: pointer;
 }
 
-.drop-zone:hover {
+.rw-drop-zone:hover {
   border-color: #667eea;
   background: #f0f4ff;
 }
 
-.drop-zone-content {
+.rw-drop-zone-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
-.upload-icon {
-  font-size: 3rem;
-}
-
-.upload-text {
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: #374151;
-  margin: 0;
-}
-
-.upload-hint {
-  font-size: 0.875rem;
-  color: #9ca3af;
-  margin: 0;
-}
-
-.file-input {
-  display: none;
-}
-
-.upload-btn {
-  padding: 0.75rem 2rem;
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.upload-btn:hover {
-  background: #5568d3;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.preview-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.image-comparison {
+.rw-image-comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
+  align-items: start;
 }
 
-.comparison-item {
+.rw-comparison-item {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
+  /* Prevent grid blowout */
 }
 
-.comparison-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0;
-  text-align: center;
-}
-
-.image-wrapper {
+.rw-image-wrapper {
+  /* Renamed concept: Stage */
   width: 100%;
-  aspect-ratio: 1;
+  height: 500px;
+  /* Fixed height for consistency */
   border-radius: 12px;
-  overflow: hidden;
   background: #f3f4f6;
   border: 2px solid #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  padding: 1rem;
 }
 
-.image-wrapper img {
-  width: 100%;
-  height: 100%;
+.rw-content-wrap {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 0;
+  /* Shadow to distinguish image boundary on white bg */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.rw-content-wrap img {
+  display: block;
+  max-width: 100%;
+  max-height: 460px;
+  /* Stage height (500) - Padding (32) - Border (4) approx */
+  width: auto;
+  height: auto;
   object-fit: contain;
-}
-
-.placeholder-result {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: #9ca3af;
-  padding: 2rem;
 }
 
 .placeholder-icon {
@@ -222,6 +181,111 @@
   color: #1a1a1a;
 }
 
+/* Canvas Overlay */
+.rw-canvas-wrapper {
+  position: relative;
+  line-height: 0;
+}
+
+.rw-drawing-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: none;
+  /* Hide default cursor */
+  touch-action: none;
+  z-index: 10;
+}
+
+.brush-cursor {
+  position: absolute;
+  pointer-events: none;
+  /* Allow clicks to pass through to canvas */
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 0, 0, 0.2);
+  /* Semi-transparent red fill */
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), inset 0 0 2px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  display: none;
+  /* Hidden by default until mouse enters */
+}
+
+/* Show cursor when active class is present (handled by JS mainly, but good backup) */
+.rw-content-wrap:hover .brush-cursor {
+  display: block;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem;
+  background: #f1f5f9;
+  border-radius: 8px;
+  /* margin-bottom: 1rem; Removed as it might be handled by parent gap */
+}
+
+.tool-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.tool-control input[type="range"] {
+  width: 120px;
+  cursor: pointer;
+}
+
+.action-btn.small {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+
+.loading-tag {
+  font-size: 0.8rem;
+  color: #f59e0b;
+  margin-left: 0.5rem;
+  font-weight: normal;
+}
+
+/* Processing State */
+.processing-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 768px) {
   .tool-title {
     font-size: 1.5rem;
@@ -248,4 +312,3 @@
     gap: 0.5rem;
   }
 }
-
