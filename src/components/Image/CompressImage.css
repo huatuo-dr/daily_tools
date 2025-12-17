@@ -159,6 +159,105 @@
   color: #9ca3af;
 }
 
+.format-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.format-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #e5e7eb;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.format-btn:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.format-btn.active {
+  border-color: #667eea;
+  background: #667eea;
+  color: white;
+}
+
+.format-hint {
+  font-size: 0.75rem;
+  color: #f59e0b;
+  margin: 0.25rem 0 0 0;
+  font-weight: 500;
+}
+
+.target-size-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.target-size-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s ease;
+}
+
+.target-size-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.target-size-input:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.input-unit {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.size-hint {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.target-hint {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.error-icon {
+  font-size: 1rem;
+}
+
 .image-comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -219,6 +318,32 @@
   color: #10b981;
   font-weight: 600;
   margin-left: 0.5rem;
+}
+
+.size-success {
+  color: #10b981;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.size-warning {
+  color: #f59e0b;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.size-info-text {
+  color: #6b7280;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.quality-info {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
 }
 
 .size-placeholder {
@@ -290,6 +415,17 @@
   background: #059669;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.action-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .tool-info {
