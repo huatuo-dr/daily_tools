@@ -37,7 +37,9 @@ is_docker_running() {
 start_docker() {
     cd "$PROJECT_DIR"
     log "启动 Docker Compose..."
-    docker compose up -d
+    # 使用 --build 确保使用最新代码构建
+    # 如果镜像已存在，会重新构建；如果容器已存在，会先停止并重新创建
+    docker compose up -d --build
     if [ $? -eq 0 ]; then
         log "Docker Compose 启动成功"
         return 0
@@ -198,8 +200,9 @@ start() {
     # 检查 Docker 是否已运行
     if is_docker_running; then
         echo -e "${GREEN}Docker Compose 已经在运行中${NC}"
+        echo -e "${YELLOW}提示: 如需使用最新代码，请先执行 stop 或 kill，然后重新 start${NC}"
     else
-        # 启动 Docker
+        # 启动 Docker（会使用最新代码重新构建）
         if ! start_docker; then
             echo -e "${RED}启动失败！${NC}"
             return 1
