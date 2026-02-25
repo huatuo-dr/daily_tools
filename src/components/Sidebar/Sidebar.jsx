@@ -1,4 +1,7 @@
 import './Sidebar.css'
+import githubIcon from '../../assets/icons/github.png'
+
+const GITHUB_URL = 'https://github.com/huatuo-dr/daily_tools'
 
 const Sidebar = ({ activeTab, onTabChange, collapsed, onToggle }) => {
   const tabs = [
@@ -34,6 +37,19 @@ const Sidebar = ({ activeTab, onTabChange, collapsed, onToggle }) => {
           </button>
         ))}
       </nav>
+      <div className="sidebar-footer">
+        <a
+          className="sidebar-link"
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={collapsed ? 'GitHub' : ''}
+        >
+          <img className="tab-icon github-icon" src={githubIcon} alt="GitHub" />
+          <span className="tab-label">GitHub</span>
+          <span className="external-icon">↗</span>
+        </a>
+      </div>
     </aside>
   )
 }
