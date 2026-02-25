@@ -35,8 +35,7 @@ self.onmessage = async (e) => {
                 }
 
                 try {
-                    // Import OpenCV script
-                    self.importScripts('https://docs.opencv.org/4.8.0/opencv.js');
+                    self.importScripts('/libs/opencv.js');
 
                     // Wait for initialization
                     await waitForCv();
